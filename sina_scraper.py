@@ -125,36 +125,36 @@ def get_weibo_parallel(uid, splitted, headers_list):
 
     return None
 
-
-# setting up headers--------------------------------------------------------------------
-headers = []
-
-for file in os.listdir('./headers/'):
-    headers.append(joblib.load('./headers/' + file))
-#-----------------------------------------------------------------------------------------
-
-weibo = []
-failed = []
-
-# setting up parameters---------------------------------------------------------------
-UID = 2813700891
-user_name = '微博基金'
-begin_time = '2024-01-21'
-end_time = '2024-01-31'
-full_time_range = pd.date_range(begin_time, end_time)
-#----------------------------------------------------------------------------------------
-
-splitted = split_series(full_time_range, len(headers))
-
-tasklength = len(full_time_range)
-finished = 0
-
-# collecting
-start = datetime.now()
-get_weibo_parallel(UID, splitted, headers)
-end = datetime.now()
-print(end-start, ' '.ljust(60))
-
-weibo = pd.DataFrame(weibo)
-# weibo['发表时间'] = pd.to_datetime(weibo['发表时间'], format="%a %b %d %H:%M:%S %z %Y")
-# weibo.sort_values(by='发表时间').to_csv(f'./data/{user_name}.csv', index=False)
+if __name__ == '__main__':
+    # setting up headers--------------------------------------------------------------------
+    headers = []
+    
+    for file in os.listdir('./headers/'):
+        headers.append(joblib.load('./headers/' + file))
+    #-----------------------------------------------------------------------------------------
+    
+    weibo = []
+    failed = []
+    
+    # setting up parameters---------------------------------------------------------------
+    UID = 2813700891
+    user_name = '微博基金'
+    begin_time = '2024-01-21'
+    end_time = '2024-01-31'
+    full_time_range = pd.date_range(begin_time, end_time)
+    #----------------------------------------------------------------------------------------
+    
+    splitted = split_series(full_time_range, len(headers))
+    
+    tasklength = len(full_time_range)
+    finished = 0
+    
+    # collecting
+    start = datetime.now()
+    get_weibo_parallel(UID, splitted, headers)
+    end = datetime.now()
+    print(end-start, ' '.ljust(60))
+    
+    weibo = pd.DataFrame(weibo)
+    # weibo['发表时间'] = pd.to_datetime(weibo['发表时间'], format="%a %b %d %H:%M:%S %z %Y")
+    # weibo.sort_values(by='发表时间').to_csv(f'./data/{user_name}.csv', index=False)
